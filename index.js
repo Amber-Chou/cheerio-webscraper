@@ -1,8 +1,12 @@
-const axios = require('axios');
-const cheerio = require('cheerio')
-const express = require('express')
 const PORT = 8000
-const app = express()
+const axios = require('axios');
+const cheerio = require('cheerio');
+const express = require('express');
+const app = express();
+const cors = require('cors');
+app.use(cors());
+app.use(express.static('public'));
+
 
 const url = 'https://www.theguardian.com/uk'
 
@@ -17,7 +21,7 @@ app.get('/', function (req,res) {
 
 app.get('/results', (req,res)=>{
   axios(url)
-.then(response => {
+ .then(response => {
   const html = response.data
   const $ = cheerio.load(html)
   const articles = []
@@ -31,7 +35,7 @@ app.get('/results', (req,res)=>{
   })
   // console.log(articles)
   res.json(articles)
-}).catch(err => console.log(err))
+ }).catch(err => console.log(err))
 
 })
 
